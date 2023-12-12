@@ -4,12 +4,17 @@ import java.awt.event.MouseListener;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.awt.geom.Point2D;
+import javax.swing.JOptionPane;
 
 public class Control implements MouseListener{
 
    final int size = 3;
    int[][] tablero = new int[size][size];
    int boton;
+   Point punto;
+   int ganador;
+   boolean turno=true;
+   boolean botonpulsado=false;
    ArrayList<myRectangle> zonapulsable = new ArrayList<myRectangle>();
 
    //constructor
@@ -24,23 +29,232 @@ public class Control implements MouseListener{
          }
       }
    }
+
+   public int calcularTablero(){
+      if((tablero[0][0]!=-1)&&(tablero[0][0]==tablero[1][1])&&(tablero[1][1]==tablero[2][2])){//diagonal principal
+          return tablero[1][1];
+      }
+       if((tablero[2][0]!=-1)&&(tablero[2][0]==tablero[1][1])&&(tablero[1][1]==tablero[0][2])){//diagonal principal
+          return tablero[1][1];
+      }
+       int n=this.calcularLinea();
+       int m=this.calcularColumuna();
+       if(n!=-1){
+           return n;
+       }
+       if(m!=-1){
+           return m;
+       }
+      
+      return -1;   
+   }
+
+   public boolean fin(){
+      return (this.isCompleto())||(this.calcularTablero()!=-1);
+   }
    
-   public void getCasilla(Point punto){
-      Point2D p2d = punto;
-      for(myRectangle mrect:this.getLcasillas()){
-         if(mrect.getRect().contains(p2d)){
-            /* System.out.println("tablero["+mrect.getPosx()+ "]["+mrect.getPosy()+"]"); */
-            System.out.println("tablero["+mrect.getPosy()+ "]["+mrect.getPosx()+"]");
-            if (boton == 1) {
-            System.out.println("BOTON IZQUIERDO");
-               tablero[mrect.getPosx()][mrect.getPosy()]=0;
-            }
-            if (boton == 3) {
-               System.out.println("BOTON DERECHO");
-                tablero[mrect.getPosx()][mrect.getPosy()]=1;
-            }
+   public boolean isCompleto(){
+      boolean condicion=true;
+       for(int i=0;i<tablero[0].length;i++){//recorremos el tablero
+          for(int j=0;j<tablero.length;j++){
+              if(tablero[i][j]==-1){
+                  condicion=false;
+              }
+          }
+       }
+       return condicion;
+   }
+
+   public int calcularLinea(){
+   boolean condicion=false;
+   int i=0;
+   int resul=-1;
+      while((condicion==false)&&(i<tablero[0].length)){
+      if((tablero[0][i]!=-1)&&(tablero[0][i]==tablero[1][i])&&(tablero[1][i]==tablero[2][i])){//diagonal principal
+      resul=tablero[0][i];
+      condicion=true;
+         }
+      i++;
+      }
+      if (condicion==true){
+         return resul;
+      }else
+      return -1;
+   }
+
+
+
+   // ARTIFICIAL INTELLIGENCE Russel Norving
+   /* función DECISIÓN-MINIMAX(estado) devuelve una acción
+   variables de entrada: estado, estado actual del juego
+   v ; MAX-VALOR(estado)
+   devolver la acción de SUCESORES(estado) con valor v
+   función MAX-VALOR(estado) devuelve un valor utilidad
+   si TEST-TERMINAL(estado) entonces devolver UTILIDAD(estado)
+   v ; 
+   para un s en SUCESORES(estado) hacer
+   v ; MAX(v, MIN-VALOR(s))
+   devolver v
+   función MAX-VALOR(estado) devuelve un valor utilidad
+   si TEST-TERMINAL(estado) entonces devolver UTILIDAD(estado)
+   v ; 
+   para un s en SUCESORES(estado) hacer
+   v ; MIN(v, MAX-VALOR(s))
+   devolver v
+ */
+
+   //pseudocodigo
+/*    MiniMax()  
+      best.mv = [not yet defined]  
+      best.score = -99999  
+      For each legal move m  
+      { 
+         make move m.mv on Board   
+         m.score = MIN   
+         if (m.score > best.score) then best = m   
+         retract move m.mv on Board  
+      }  
+      Make move best.mv 
+      ----------------------------------------  
+      MAX()  if (game over) return EVAL-ENDING  
+      else if (max depth) return EVAL  
+      else   best.score = -99999
+         for each computer legal move m   
+         { make move m.mv on Board    
+            m.score = MIN    
+            if (m.score > best.score) then best = m    
+            retract move m.mv on Board   
+         }   
+      return best.score  
+      
+      ----------------------------------------
+      MIN()  if (game over) return EVAL-ENDING  
+      else if (max depth) return EVAL  
+      else   best.score = 99999   
+      for each human legal move m.mv   
+      { make move m.mv on Board    
+         m.score = MAX    
+         if (m.score < best.score) then best = m    
+         retract move m.mv on Board   
+      }   
+      return best.score  */
+
+   public void minmax(){
+       
+      int filaoptima=0;
+      int columnaoptima=0;
+      int valorOptimo=-99999;
+      int aux;
+      //TERMINAR
+       /* for (int index = 0; index < array.length; index++) {
+         for (int index = 0; index < array.length; index++) {
+            
+         }
+       } */
+        
+        tablero[filaoptima][columnaoptima]=1;
+  }
+
+
+   public int min(){
+      if(this.fin()){
+         if(this.calcularTablero()!=-1){
+            return 1;
+            }else{
+            return 0;
          }
       }
+   
+      int valorOptimo=99999;
+      int aux;
+      //TERMINAR
+     /*  for (int index = 0; index < array.length; index++) {
+         for (int index = 0; index < array.length; index++) {
+            
+         }
+       } */
+    return valorOptimo;
+   }
+
+   public int max(){
+      if(this.fin()){
+          if(this.calcularTablero()!=-1){
+              return -1;
+            }else{
+              return 0;
+          }     
+      }
+      int valorOptimo=-99999;
+      int aux;
+        for(int i=0;i<tablero[0].length;i++){//recorremos el tablero
+           for(int j=0;j<tablero.length;j++){
+               if(tablero[i][j]==-1){
+                   tablero[i][j]=1;
+                   aux=min();
+                   if(aux>valorOptimo){
+                       valorOptimo=aux;
+                   }
+                   tablero[i][j]=-1;
+               }
+           }
+        }
+       return valorOptimo;
+   }
+
+   public int calcularColumuna(){
+      for(int i=0;i<tablero.length;i++){
+         if((tablero[i][0]!=-1)&&(tablero[i][0]==tablero[i][1])&&(tablero[i][1]==tablero[i][2])){//diagonal principal
+         return tablero[i][0];
+            }
+         }
+      return -1;
+   }
+
+
+   public void ejecutarFrame(){
+      if(!this.fin()){
+         if(turno==true){//si me toca
+         if(this.botonpulsado){
+            if(this.getCasilla(punto)){// si se ppuede pulsar esa casilla la marca y devuelve true si se ha podido marcar una casilla
+               botonpulsado=false;
+               turno=false;
+            }
+         }else{
+               
+         }
+      }else{
+      this.minmax();
+      turno=true;
+      }
+      }else{
+         int n=this.calcularTablero();
+         String ganador="";
+         if (n==1){
+            ganador="PC";
+         }else if (n==0){
+            ganador="Usuario";
+         }else{
+            ganador="Empate";
+         }
+         JOptionPane.showMessageDialog(null,"ha ganadoo el Jugador"+ganador);
+         this.crearTablero();
+      }
+   }
+
+
+   public boolean getCasilla(Point punto){
+      Point2D p2d=punto;
+      boolean condicion=false;
+      for(myRectangle mrect:this.getLcasillas()){
+         if(mrect.getRect().contains(p2d)){  
+         System.out.print("tablero["+mrect.getPosx()+ "]["+mrect.getPosy()+"]==");
+         if(tablero[mrect.getPosx()][mrect.getPosy()]==-1){
+               tablero[mrect.getPosx()][mrect.getPosy()]=0;
+               condicion=true;
+         }
+         }
+      }
+         return condicion;
    }
    
    public ArrayList<myRectangle> getLcasillas() {
@@ -69,15 +283,17 @@ public class Control implements MouseListener{
 
    @Override
    public void mousePressed(MouseEvent e) {
-      Point punto = e.getPoint();
+      punto=e.getLocationOnScreen();
+      botonpulsado=true;
+      /* punto = e.getPoint();
       boton = e.getButton();
       System.out.println("estas presionando este boton "+boton);
-      this.getCasilla(punto);
+      this.getCasilla(punto); */
    }
 
    @Override
    public void mouseReleased(MouseEvent e) {
-     
+      botonpulsado=false;
    }
 
    @Override

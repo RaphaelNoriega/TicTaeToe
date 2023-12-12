@@ -1,12 +1,12 @@
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import java.awt.*;
-import javax.swing.ImageIcon;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 public class App extends JFrame implements Runnable{
 
     int width = 800;
@@ -49,21 +49,21 @@ public class App extends JFrame implements Runnable{
         for (int i = 0; i < 100; i++) {
             Color c = new Color(34+i, 53, 177  );
             g.setColor(c);
-            g.fillRect(0, i+8, this.width, this.height);
+            g.fillRect(0, i*8, this.width, this.height);
         }
     }
 
     public void pintarSimbolo(Graphics g){
-        for (int i = 0; i < control.tablero[0].length; i++) {
-            for (int j = 0; j < control.tablero.length; j++) {
-              if (control.tablero[i][j] == 0) {
-                g.drawImage(circle, desplazamiento+(i*tcelda),desplazamiento+(j*tcelda),tcelda,tcelda,this);
-              }
-                if (control.tablero[i][j] == 1) {
-                    g.drawImage(cross, desplazamiento+(i*tcelda),desplazamiento+(j*tcelda),tcelda,tcelda,this);
-              }
-            }
-         }
+        for(int i=0;i<control.tablero[0].length;i++){
+                for(int j=0;j<control.tablero.length;j++){
+                    if(control.tablero[i][j]==0){
+                        g.drawImage(circle,desplazamiento+(i*tcelda),desplazamiento+(j*tcelda), tcelda, tcelda, this);
+                    }
+                    if(control.tablero[i][j]==1){
+                        g.drawImage(cross,desplazamiento+(i*tcelda),desplazamiento+(j*tcelda), tcelda, tcelda, this);
+                    } 
+                }
+        }
     }
 
     @Override
@@ -102,7 +102,8 @@ public class App extends JFrame implements Runnable{
             } catch (InterruptedException ex) {
                 Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+            control.ejecutarFrame();
+            repaint();
         }
     }
 }
