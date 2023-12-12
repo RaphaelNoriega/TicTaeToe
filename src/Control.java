@@ -84,25 +84,6 @@ public class Control implements MouseListener{
 
 
 
-   // ARTIFICIAL INTELLIGENCE Russel Norving
-   /* función DECISIÓN-MINIMAX(estado) devuelve una acción
-   variables de entrada: estado, estado actual del juego
-   v ; MAX-VALOR(estado)
-   devolver la acción de SUCESORES(estado) con valor v
-   función MAX-VALOR(estado) devuelve un valor utilidad
-   si TEST-TERMINAL(estado) entonces devolver UTILIDAD(estado)
-   v ; 
-   para un s en SUCESORES(estado) hacer
-   v ; MAX(v, MIN-VALOR(s))
-   devolver v
-   función MAX-VALOR(estado) devuelve un valor utilidad
-   si TEST-TERMINAL(estado) entonces devolver UTILIDAD(estado)
-   v ; 
-   para un s en SUCESORES(estado) hacer
-   v ; MIN(v, MAX-VALOR(s))
-   devolver v
- */
-
    //pseudocodigo
 /*    MiniMax()  
       best.mv = [not yet defined]  
