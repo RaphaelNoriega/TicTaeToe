@@ -83,74 +83,26 @@ public class Control implements MouseListener{
    }
 
 
-
-   // ARTIFICIAL INTELLIGENCE Russel Norving
-   /* función DECISIÓN-MINIMAX(estado) devuelve una acción
-   variables de entrada: estado, estado actual del juego
-   v ; MAX-VALOR(estado)
-   devolver la acción de SUCESORES(estado) con valor v
-   función MAX-VALOR(estado) devuelve un valor utilidad
-   si TEST-TERMINAL(estado) entonces devolver UTILIDAD(estado)
-   v ; 
-   para un s en SUCESORES(estado) hacer
-   v ; MAX(v, MIN-VALOR(s))
-   devolver v
-   función MAX-VALOR(estado) devuelve un valor utilidad
-   si TEST-TERMINAL(estado) entonces devolver UTILIDAD(estado)
-   v ; 
-   para un s en SUCESORES(estado) hacer
-   v ; MIN(v, MAX-VALOR(s))
-   devolver v
- */
-
-   //pseudocodigo
-/*    MiniMax()  
-      best.mv = [not yet defined]  
-      best.score = -99999  
-      For each legal move m  
-      { 
-         make move m.mv on Board   
-         m.score = MIN   
-         if (m.score > best.score) then best = m   
-         retract move m.mv on Board  
-      }  
-      Make move best.mv 
-      ----------------------------------------  
-      MAX()  if (game over) return EVAL-ENDING  
-      else if (max depth) return EVAL  
-      else   best.score = -99999
-         for each computer legal move m   
-         { make move m.mv on Board    
-            m.score = MIN    
-            if (m.score > best.score) then best = m    
-            retract move m.mv on Board   
-         }   
-      return best.score  
-      
-      ----------------------------------------
-      MIN()  if (game over) return EVAL-ENDING  
-      else if (max depth) return EVAL  
-      else   best.score = 99999   
-      for each human legal move m.mv   
-      { make move m.mv on Board    
-         m.score = MAX    
-         if (m.score < best.score) then best = m    
-         retract move m.mv on Board   
-      }   
-      return best.score  */
-
-   public void minmax(){
+    public void minmax(){
        
       int filaoptima=0;
       int columnaoptima=0;
       int valorOptimo=-99999;
       int aux;
-      //TERMINAR
-       /* for (int index = 0; index < array.length; index++) {
-         for (int index = 0; index < array.length; index++) {
-            
-         }
-       } */
+        for(int i=0;i<tablero[0].length;i++){//recorremos el tablero
+           for(int j=0;j<tablero.length;j++){
+               if(tablero[i][j]==-1){
+                   tablero[i][j]=1;
+                   aux=min();
+                   if(aux>valorOptimo){
+                       filaoptima=i;
+                       columnaoptima=j;
+                       valorOptimo=aux;
+                   }
+                   tablero[i][j]=-1;
+               }
+           }
+        }
         
         tablero[filaoptima][columnaoptima]=1;
   }
@@ -167,12 +119,18 @@ public class Control implements MouseListener{
    
       int valorOptimo=99999;
       int aux;
-      //TERMINAR
-     /*  for (int index = 0; index < array.length; index++) {
-         for (int index = 0; index < array.length; index++) {
-            
-         }
-       } */
+     for(int i=0;i<tablero[0].length;i++){//recorremos el tablero
+        for(int j=0;j<tablero.length;j++){
+            if(tablero[i][j]==-1){
+                tablero[i][j]=0;
+                aux=max();
+                if(aux<valorOptimo){
+                    valorOptimo=aux;
+                }
+                tablero[i][j]=-1;
+            }
+        }
+      }
     return valorOptimo;
    }
 
@@ -200,7 +158,7 @@ public class Control implements MouseListener{
         }
        return valorOptimo;
    }
-
+   
    public int calcularColumuna(){
       for(int i=0;i<tablero.length;i++){
          if((tablero[i][0]!=-1)&&(tablero[i][0]==tablero[i][1])&&(tablero[i][1]==tablero[i][2])){//diagonal principal
